@@ -169,6 +169,24 @@ document.addEventListener('DOMContentLoaded', () => {
   // Projects / Analytical Case Studies Data
   const projectsData = [
     {
+      id: 'B-Tech-Sales-Dashboard Executive E-Commerce & Product Intelligence Dashboard',
+      tags: ['POWER BI', 'DAX', 'HTML5 & CSS3', 'SVG', 'STAR SCHEMA'],
+      title: 'B-Tech-Sales-Dashboard Executive E-Commerce & Product Intelligence Dashboard',
+      leadDesc: 'An enterprise-grade, five-page interactive Business Intelligence portal designed for B.TECH Egypt (Egypt\'s leading omnichannel consumer electronics & appliances retailer). The project moves beyond native Power BI visuals by incorporating custom HTML5 containers, CSS3 @keyframes animations (popIn, sweep, blink, fillBar), and dynamic SVG vector graphics to deliver an interactive dark-mode web-app experience adhering strictly to B.TECH\'s corporate visual identity (#111827 Dark Slate and #FF5500 Neon Orange).',
+      businessObjective: '1-High-Level Revenue & Growth Health: What are the company-wide sales, net profit margins, completed orders, Average Order Value (AOV), and Year-over-Year (YoY) growth rates?<br>2-Regional & Geospatial Performance: Which Egyptian regions (Greater Cairo, Delta, Alexandria, South) and key cities drive the highest revenue, and how are sales distributed across payment modes (Cash on Delivery vs Online vs Cards)?<br>3-Category & Segment Profitability: Which product categories (Technology, Office Supplies, Furniture) and customer segments (Consumer, Corporate, Home Office) generate the highest profit margins vs return rates?<br>4-Product-Level Intelligence: Which top-performing SKUs lead revenue generation, net profit contribution, and YoY growth?',
+      keyFindings: 'Total Sales: $1.57M ($1,565,532 | +152.7% YoY)<br>Total Net Profit: $175.3K ($175,295 | 11.2% Overall Profit Margin | +97.0% YoY)<br>Total Orders & AOV: 3,003 Completed Orders | $521.32 Average Order Value (AOV)<br>Top Performing Region: Greater Cairo ($522.4K Sales | $67.9K Net Profit | 33.4% Order Share)<br>Dominant Payment Mode: Cash on Delivery - COD ($667.1K Sales | 42.6% Revenue Share)<br>Top Profitable Category: Technology ($90.5K Net Profit | 19.2% Margin | 51.6% Profit Share)',
+      tools: ['Power BI', 'Advanced DAX', 'HTML5 & CSS3', 'SVG Graphics'],
+      image: 'assets/images/project5.png',
+      badge: 'LIVE DASHBOARD',
+      githubUrl: 'https://github.com/mostafakaram893/B-Tech-Sales-Dashboardd',
+      demoUrl: 'https://app.powerbi.com/view?r=eyJrIjoiYWYzMDE0OTUtNTI5OS00NTNjLWEyOTQtYTIxNGFkZWEwODE4IiwidCI6IjI1Y2UwMjYxLWJiZDYtNDljZC1hMWUyLTU0MjYwODg2ZDE1OSJ9',
+      fullCaseStudy: {
+        architecture: 'Transactional CSV Data Ingestion -> Power Query Data Cleaning & Transformation -> Power BI Star Schema Model (Fact_Sales, Dim_Customers, Dim_Products, Dim_Date) -> Dynamic DAX Measures (ADDCOLUMNS, SUMMARIZE, RANKX, YoY Time Intelligence) & Custom HTML5/CSS3/SVG Rendering.',
+        impactMetric2: '-95% Reporting Cycle Time',
+        impactMetric3: '5 Interactive Analytical Portals'
+      }
+    },
+    {
       id: 'Breadfast Executive E-Commerce & Product Intelligence Dashboard',
       tags: ['POWER BI', 'DAX', 'HTML5 & CSS3', 'Status'],
       title: 'Breadfast Executive E-Commerce & Product Intelligence Dashboard',
@@ -176,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
      businessObjective: '1-High-Level Revenue Health: What are the company-wide sales, profit margins, completed orders, and active customer counts?<br>2-Regional Expansion & Fulfillment: Which geographical regions drive revenue, and how is order delivery speed distributed (Same Day vs Express vs Standard)?<br>3-Product & Sub-Category Profitability: Which product lines generate the highest profit margins, and which sub-categories are loss-makers?<br>4-Unit Economics: What is the Average Order Value (AOV), Profit per Order, and average Basket Size across customer segments?',
     keyFindings: 'Total Sales: $2.30M<br>Total Profit: $286K (12.4% Overall Profit Margin)<br>Total Orders: 9,994 Completed Orders<br>Total Quantity Sold: 38K Units<br>Active Customer Base: 793 Unique Customers<br>Catalog Coverage: 1,862 Active SKUs',
       tools: [ 'Power BI', 'Excel / DAX', 'HTML5 & CSS3', 'Status'],
-      image: 'assets/images/project.PNG',
+      image: 'assets/images/project.png',
       badge: 'LIVE DASHBOARD',
       githubUrl: 'https://github.com/mostafakaram893/breadfast-retail-intelligence-dashboard',
       demoUrl: 'https://app.powerbi.com/view?r=eyJrIjoiNWIwMTFlZWItZjVhYS00MDY3LTlhYWYtY2RkYjcwMTI5NjNkIiwidCI6IjI1Y2UwMjYxLWJiZDYtNDljZC1hMWUyLTU0MjYwODg2ZDE1OSJ9',

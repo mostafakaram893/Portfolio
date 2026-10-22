@@ -93,6 +93,11 @@ body {
   min-height: 100vh;
 }
 
+/* Mobile Safari only honors overflow-x on the root element */
+html {
+  overflow-x: hidden;
+}
+
 img {
   max-width: 100%;
   height: auto;
@@ -1201,8 +1206,10 @@ ul {
   user-select: none;
 }
 
-/* Active (centre) */
+/* Active (centre) - kept in normal flow so the stage height always fits the
+   active card on every screen width (siblings stay absolutely positioned) */
 .carousel-card[data-pos="0"] {
+  position: relative;
   transform: translateX(0) scale(1) translateZ(0);
   opacity: 1;
   filter: none;
@@ -2595,10 +2602,12 @@ ul {
   .carousel-stage {
     min-height: 480px;
   }
-  /* Neighbours mostly hidden on small tablet */
+  /* Neighbour cards fully hidden on tablet and below: their faded text
+     bled into the viewport edges and sat on top of the active card */
   .carousel-card[data-pos="-1"],
   .carousel-card[data-pos="1"] {
-    opacity: 0.15;
+    opacity: 0;
+    pointer-events: none;
   }
   .carousel-arrow {
     width: 42px;

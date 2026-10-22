@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
       image: 'assets/images/project5.png',
       badge: 'LIVE DASHBOARD',
       githubUrl: 'https://github.com/mostafakaram893/B-Tech-Sales-Dashboardd',
-      demoUrl: 'https://app.powerbi.com/view?r=eyJrIjoiYWYzMDE0OTUtNTI5OS00NTNjLWEyOTQtYTIxNGFkZWEwODE4IiwidCI6IjI1Y2UwMjYxLWJiZDYtNDljZC1hMWUyLTU0MjYwODg2ZDE1OSJ9',
+      demoUrl: 'https://app.powerbi.com/view?r=eyJrIjoiNGJlNTQ3NmMtM2UxNi00NzRhLWI3ZTYtNmNiMDUxYmNlYWIxIiwidCI6IjI1Y2UwMjYxLWJiZDYtNDljZC1hMWUyLTU0MjYwODg2ZDE1OSJ9&pageName=bfabbeb309c5bc55a94c',
       fullCaseStudy: {
         architecture: 'Transactional CSV Data Ingestion -> Power Query Data Cleaning & Transformation -> Power BI Star Schema Model (Fact_Sales, Dim_Customers, Dim_Products, Dim_Date) -> Dynamic DAX Measures (ADDCOLUMNS, SUMMARIZE, RANKX, YoY Time Intelligence) & Custom HTML5/CSS3/SVG Rendering.',
         impactMetric2: '-95% Reporting Cycle Time',
@@ -345,80 +345,283 @@ businessObjective: 'Box Office Economics: Correlation between production budget 
     `).join('');
   }
 
-  // Render Projects List
-  function renderProjects() {
-    const container = document.getElementById('projectsContainer');
-    if (!container) return;
+  // ── Carousel State ───────────────────────────────────────────────────────
+  const carousel = {
+    current: 0,           // active index
+    total:   0,           // set after render
+    animating: false,     // debounce flag
+    autoplayTimer: null,
+    AUTOPLAY_DELAY: 5000,
+    ANIM_DURATION: 600,   // ms – slightly longer than CSS transition
+  };
 
-    container.innerHTML = projectsData.map((project, index) => `
-      <article class="project-case-card reveal-element delay-${index + 1}">
-        <div class="project-preview-wrap" onclick="window.openProjectLightbox('${project.id}')" role="button" aria-label="View Project ${project.title}">
-          <span class="project-preview-badge">${project.badge}</span>
-          <img src="${project.image}" alt="${project.title}" class="project-img" loading="lazy">
-          <div class="project-preview-overlay">
-            <span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-              Inspect Case Study
-            </span>
+  // ── Build Carousel Cards ──────────────────────────────────────────────────
+  function renderCarousel() {
+    const stage    = document.getElementById('carouselStage');
+    const dotsWrap = document.getElementById('carouselDots');
+    const wrap     = document.getElementById('projectsCarouselWrap');
+    if (!stage || !dotsWrap) return;
+
+    carousel.total = projectsData.length;
+
+    // Inject cards (all start hidden; positions set by updateCarousel)
+    stage.innerHTML = projectsData.map((project, idx) => `
+      <div class="carousel-card" data-idx="${idx}" data-pos="hidden" aria-hidden="true">
+        <div class="carousel-card-inner">
+          <!-- Image pane -->
+          <div class="carousel-img-pane"
+               onclick="window.openProjectLightbox('${escHtml(project.id)}')"
+               role="button"
+               tabindex="-1"
+               aria-label="View case study: ${escHtml(project.title)}">
+            <span class="carousel-preview-badge">${escHtml(project.badge)}</span>
+            <img src="${escHtml(project.image)}"
+                 alt="${escHtml(project.title)}"
+                 loading="lazy">
+            <div class="carousel-img-overlay">
+              <span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                Inspect Case Study
+              </span>
+            </div>
           </div>
-        </div>
-
-        <div class="project-details-wrap">
-          <div class="project-tags-row">
-            <span>•</span>
-            <span>${project.tags.join(' • ')}</span>
-          </div>
-          <h3 class="project-title">${project.title}</h3>
-          <p class="project-lead-desc">${project.leadDesc}</p>
-
-          ${index !== 1 ? `
-          <div class="case-box">
-            <span class="case-box-label">Key Business Questions Answered</span>
-            <p class="case-box-text">${project.businessObjective}</p>
-          </div>
-
-          <div class="case-box highlight">
-            <span class="case-box-label">✦ Core Business Metrics (KPIs)</span>
-            <p class="case-box-text">${project.keyFindings}</p>
-          </div>
-          ` : ''}
-
-          <div class="project-chips-row">
-            ${project.tools.map(tool => `<span class="tool-chip">${tool}</span>`).join('')}
-          </div>
-
-          <div class="project-actions-row">
-            <button class="btn btn-primary btn-sm" onclick="window.openProjectLightbox('${project.id}')">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-              </svg>
-              <span>View Project Details</span>
-            </button>
-            <a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-glass btn-sm">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-              </svg>
-              <span>GitHub Repo</span>
-            </a>
-            ${project.demoUrl ? `
-              <a href="${project.demoUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-glass btn-sm">
+          <!-- Text pane -->
+          <div class="carousel-text-pane">
+            <div class="carousel-tags-row">
+              <span>•</span>
+              <span>${project.tags.join(' • ')}</span>
+            </div>
+            <h3 class="carousel-title">${escHtml(project.title)}</h3>
+            <p class="carousel-desc">${escHtml(project.leadDesc)}</p>
+            <div class="carousel-chips-row">
+              ${project.tools.map(t => `<span class="tool-chip">${escHtml(t)}</span>`).join('')}
+            </div>
+            <div class="carousel-actions-row">
+              <button class="btn btn-primary btn-sm"
+                      onclick="window.openProjectLightbox('${escHtml(project.id)}')"
+                      tabindex="-1">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                <span>View Details</span>
+              </button>
+              ${project.githubUrl ? `
+              <a href="${escHtml(project.githubUrl)}" target="_blank" rel="noopener noreferrer"
+                 class="btn btn-glass btn-sm" tabindex="-1">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                </svg>
+                <span>GitHub</span>
+              </a>` : ''}
+              ${project.demoUrl ? `
+              <a href="${escHtml(project.demoUrl)}" target="_blank" rel="noopener noreferrer"
+                 class="btn btn-glass btn-sm" tabindex="-1">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                   <polyline points="15 3 21 3 21 9"></polyline>
                   <line x1="10" y1="14" x2="21" y2="3"></line>
                 </svg>
                 <span>Live Demo</span>
-              </a>
-            ` : ''}
+              </a>` : ''}
+            </div>
           </div>
         </div>
-      </article>
+      </div>
     `).join('');
+
+    // Inject dots (skip if only one project)
+    if (carousel.total > 1) {
+      dotsWrap.innerHTML = projectsData.map((_, idx) => `
+        <button class="carousel-dot${idx === 0 ? ' active' : ''}"
+                data-idx="${idx}"
+                role="tab"
+                aria-selected="${idx === 0 ? 'true' : 'false'}"
+                aria-label="Go to project ${idx + 1}: ${escHtml(projectsData[idx].title)}">
+        </button>
+      `).join('');
+
+      dotsWrap.querySelectorAll('.carousel-dot').forEach(dot => {
+        dot.addEventListener('click', () => {
+          const target = parseInt(dot.dataset.idx, 10);
+          if (target !== carousel.current && !carousel.animating) {
+            goTo(target);
+          }
+        });
+      });
+    } else {
+      // Single project – hide nav
+      document.getElementById('carouselControls').style.display = 'none';
+    }
+
+    // Initial position update
+    updateCarousel(true);
+
+    // Entrance animation via IntersectionObserver
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            wrap.classList.add('carousel-visible');
+            io.disconnect();
+          }
+        });
+      }, { threshold: 0.15 });
+      io.observe(wrap);
+    } else {
+      wrap.classList.add('carousel-visible');
+    }
   }
+
+  // ── Update positions of all cards ─────────────────────────────────────────
+  function updateCarousel(instant = false) {
+    const cards   = document.querySelectorAll('.carousel-card');
+    const dots    = document.querySelectorAll('.carousel-dot');
+    const counter = document.getElementById('carouselCounter');
+    const prev    = document.getElementById('carouselPrev');
+    const next    = document.getElementById('carouselNext');
+    const total   = carousel.total;
+    const cur     = carousel.current;
+
+    // Temporarily remove transitions for instant jump (first render)
+    if (instant) {
+      cards.forEach(c => c.style.transition = 'none');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          cards.forEach(c => c.style.transition = '');
+        });
+      });
+    }
+
+    cards.forEach(card => {
+      const idx = parseInt(card.dataset.idx, 10);
+      const pos = ((idx - cur) % total + total) % total; // 0 .. total-1
+
+      // Map to: 0 = active, 1 = next, -1 = prev, 2 = far next, -2 = far prev, hidden
+      let relPos;
+      if      (pos === 0)              relPos = 0;
+      else if (pos === 1)              relPos = 1;
+      else if (pos === total - 1)      relPos = -1;
+      else if (pos === 2)              relPos = 2;
+      else if (pos === total - 2)      relPos = -2;
+      else                             relPos = 'hidden';
+
+      card.dataset.pos = relPos;
+      card.setAttribute('aria-hidden', relPos !== 0 ? 'true' : 'false');
+
+      // Focus management: only active card's interactive elements are reachable
+      const focusables = card.querySelectorAll('a, button');
+      focusables.forEach(el => {
+        el.tabIndex = (relPos === 0) ? 0 : -1;
+      });
+      // Image pane click is also managed per active state
+      const imgPane = card.querySelector('.carousel-img-pane');
+      if (imgPane) imgPane.tabIndex = (relPos === 0) ? 0 : -1;
+    });
+
+    // Dots
+    dots.forEach((dot, i) => {
+      const active = i === cur;
+      dot.classList.toggle('active', active);
+      dot.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+
+    // Counter
+    if (counter) counter.textContent = `${cur + 1} / ${total}`;
+
+    // Arrow disabled states (infinite loop – never disabled unless single)
+    if (prev) prev.disabled = total <= 1;
+    if (next) next.disabled = total <= 1;
+  }
+
+  // ── Navigate to a specific index ─────────────────────────────────────────
+  function goTo(target) {
+    if (carousel.animating) return;
+    carousel.animating = true;
+    carousel.current = ((target % carousel.total) + carousel.total) % carousel.total;
+    updateCarousel();
+    // Re-allow after transition finishes
+    setTimeout(() => { carousel.animating = false; }, carousel.ANIM_DURATION);
+  }
+
+  function goNext() { goTo(carousel.current + 1); }
+  function goPrev() { goTo(carousel.current - 1); }
+
+  // ── Wire up arrow buttons ─────────────────────────────────────────────────
+  function initCarouselControls() {
+    document.getElementById('carouselPrev')?.addEventListener('click', goPrev);
+    document.getElementById('carouselNext')?.addEventListener('click', goNext);
+
+    // Keyboard (left/right arrows) when carousel section is in view
+    document.addEventListener('keydown', (e) => {
+      const stage = document.getElementById('carouselStage');
+      if (!stage) return;
+      const rect = stage.getBoundingClientRect();
+      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+      if (!inView) return;
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); goPrev(); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); goNext(); }
+    });
+
+    // Touch swipe support
+    const stage = document.getElementById('carouselStage');
+    if (stage) {
+      let touchStartX = 0;
+      let touchStartY = 0;
+      stage.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }, { passive: true });
+      stage.addEventListener('touchend', (e) => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        // Only swipe if horizontal motion dominates
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+          if (dx < 0) goNext();
+          else        goPrev();
+        }
+      }, { passive: true });
+    }
+
+    // Autoplay (pause on hover / focus)
+    const wrap = document.getElementById('projectsCarouselWrap');
+    if (wrap && carousel.total > 1) {
+      function startAutoplay() {
+        stopAutoplay();
+        carousel.autoplayTimer = setInterval(goNext, carousel.AUTOPLAY_DELAY);
+      }
+      function stopAutoplay() {
+        clearInterval(carousel.autoplayTimer);
+        carousel.autoplayTimer = null;
+      }
+
+      // Respect reduced-motion preference
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced) {
+        startAutoplay();
+        wrap.addEventListener('mouseenter', stopAutoplay);
+        wrap.addEventListener('mouseleave', startAutoplay);
+        wrap.addEventListener('focusin',    stopAutoplay);
+        wrap.addEventListener('focusout',   startAutoplay);
+      }
+    }
+  }
+
+  // ── HTML escape helper ────────────────────────────────────────────────────
+  function escHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+
 
 
   /* ==========================================================================
@@ -789,7 +992,9 @@ businessObjective: 'Box Office Economics: Correlation between production budget 
      ========================================================================== */
   renderSkills('technical');
   renderCertifications();
-  renderProjects();
+  renderCarousel();
+  initCarouselControls();
   initScrollAnimations();
 
 });
+

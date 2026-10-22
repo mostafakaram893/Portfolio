@@ -340,12 +340,33 @@
           <p class="section-subtitle">Deep-dive evaluations of high-consequence enterprise problems resolved through quantitative rigor, clean architectures, and actionable outcomes.</p>
         </div>
 
-        <!-- Stacked Case Studies List -->
-        <div class="projects-list" id="projectsContainer">
-          <!-- Populated by script.js -->
+        <!-- Premium Animated Carousel -->
+        <div class="projects-carousel-wrap" id="projectsCarouselWrap" aria-label="Projects Showcase Carousel">
+          <!-- Cards injected here by script.js -->
+          <div class="carousel-stage" id="carouselStage" role="region" aria-live="polite" aria-atomic="false"></div>
+
+          <!-- Navigation Controls -->
+          <div class="carousel-controls" id="carouselControls">
+            <button class="carousel-arrow" id="carouselPrev" aria-label="Previous project">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+
+            <div class="carousel-dots" id="carouselDots" role="tablist" aria-label="Project indicators"></div>
+
+            <span class="carousel-counter" id="carouselCounter" aria-live="polite"></span>
+
+            <button class="carousel-arrow" id="carouselNext" aria-label="Next project">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </section>
+
 
     <!-- ==================== CONTACT SECTION ==================== -->
     <section class="contact section" id="contact">

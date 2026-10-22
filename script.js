@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
      businessObjective: '1-High-Level Revenue Health: What are the company-wide sales, profit margins, completed orders, and active customer counts?<br>2-Regional Expansion & Fulfillment: Which geographical regions drive revenue, and how is order delivery speed distributed (Same Day vs Express vs Standard)?<br>3-Product & Sub-Category Profitability: Which product lines generate the highest profit margins, and which sub-categories are loss-makers?<br>4-Unit Economics: What is the Average Order Value (AOV), Profit per Order, and average Basket Size across customer segments?',
     keyFindings: 'Total Sales: $2.30M<br>Total Profit: $286K (12.4% Overall Profit Margin)<br>Total Orders: 9,994 Completed Orders<br>Total Quantity Sold: 38K Units<br>Active Customer Base: 793 Unique Customers<br>Catalog Coverage: 1,862 Active SKUs',
       tools: [ 'Power BI', 'Excel / DAX', 'HTML5 & CSS3', 'Status'],
-      image: 'assets/images/project.png',
+      image: 'assets/images/project.PNG',
       badge: 'LIVE DASHBOARD',
       githubUrl: 'https://github.com/mostafakaram893/breadfast-retail-intelligence-dashboard',
       demoUrl: 'https://app.powerbi.com/view?r=eyJrIjoiNWIwMTFlZWItZjVhYS00MDY3LTlhYWYtY2RkYjcwMTI5NjNkIiwidCI6IjI1Y2UwMjYxLWJiZDYtNDljZC1hMWUyLTU0MjYwODg2ZDE1OSJ9',

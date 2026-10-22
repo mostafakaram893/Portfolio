@@ -1,6 +1,6 @@
 # Personal Portfolio - Mostafa Karam
 
-My personal data analyst portfolio website, built with plain HTML, CSS, and JavaScript (no frameworks) and hosted on GitHub Pages.
+My personal data analyst portfolio website. Built with plain HTML, CSS, and JavaScript (no frameworks), and hosted on GitHub Pages.
 
 **Live site:** https://mostafakaram893.github.io/Portfolio/
 

@@ -718,6 +718,11 @@ businessObjective: 'Box Office Economics: Correlation between production budget 
     openModal(projectModal);
   };
 
+  // Open the same updated CV PDF used in applications
+  function openCvPdf() {
+    window.open('assets/Mostafa%20Karam.pdf', '_blank', 'noopener');
+  }
+
   // Open CV Modal
   function openCvModal() {
     if (cvModal) openModal(cvModal);
@@ -743,8 +748,8 @@ businessObjective: 'Box Office Economics: Correlation between production budget 
   document.getElementById('closeCertModal')?.addEventListener('click', () => closeModal(certModal));
   document.getElementById('closeProjectModal')?.addEventListener('click', () => closeModal(projectModal));
   document.getElementById('closeCvModal')?.addEventListener('click', () => closeModal(cvModal));
-  document.getElementById('heroCvBtn')?.addEventListener('click', openCvModal);
-  document.getElementById('navCvBtn')?.addEventListener('click', openCvModal);
+  document.getElementById('heroCvBtn')?.addEventListener('click', openCvPdf);
+  document.getElementById('navCvBtn')?.addEventListener('click', openCvPdf);
 
   // Close on backdrop click
   [certModal, projectModal, cvModal].forEach(modal => {

@@ -649,7 +649,8 @@ businessObjective: 'Box Office Economics: Correlation between production budget 
     document.getElementById('certModalTitle').textContent = cert.title;
     document.getElementById('modalCertDate').textContent = cert.date;
     document.getElementById('modalCertDesc').textContent = cert.desc;
-    document.getElementById('modalCertVerifyLink').href = cert.verifyUrl;
+    const verifyLink = document.getElementById('modalCertVerifyLink');
+    if (cert.verifyUrl) { verifyLink.href = cert.verifyUrl; verifyLink.style.display = ''; } else { verifyLink.style.display = 'none'; }
 
     const skillsWrap = document.getElementById('modalCertSkills');
     skillsWrap.innerHTML = cert.skills.map(s => `<span class="badge-pill">${s}</span>`).join('');

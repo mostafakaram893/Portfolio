@@ -293,18 +293,11 @@ businessObjective: 'Box Office Economics: Correlation between production budget 
         <div class="skill-card reveal-element revealed">
           <div class="skill-card-top">
             <div class="skill-card-icon">${skill.icon}</div>
-            <span class="skill-badge-level">${skill.level}</span>
           </div>
           <h3 class="skill-card-name">${skill.name}</h3>
           <p class="skill-card-sub">${skill.subtitle}</p>
-          <div class="skill-progress-wrap">
-            <div class="skill-progress-bar">
-              <div class="skill-progress-fill" style="width: ${skill.progress}%"></div>
-            </div>
-            <div class="skill-progress-meta">
-              <span>Proficiency: ${skill.progress}%</span>
-              <span>${skill.exp}</span>
-            </div>
+          <div class="skill-progress-meta">
+            <span>${skill.exp}</span>
           </div>
         </div>
       `).join('');
@@ -995,4 +988,3 @@ businessObjective: 'Box Office Economics: Correlation between production budget 
   initScrollAnimations();
 
 });
-
